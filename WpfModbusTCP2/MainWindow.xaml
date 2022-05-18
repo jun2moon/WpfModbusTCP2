@@ -1,0 +1,63 @@
+﻿<Window x:Class="WpfModbusTCP2.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:WpfModbusTCP2"
+        mc:Ignorable="d"
+        Title="Modbus TCP" Height="320" Width="300">
+    <StackPanel>
+        <StackPanel Orientation="Horizontal" Margin="10">
+            <Label Content="Port Name : " />
+            <ComboBox x:Name="comIP" Text="No IP selected" Width="100" SelectionChanged="comIP_SelectionChanged">
+                <ComboBoxItem Content="127.0.0.1"/>
+                <ComboBoxItem Content="192.168.10.10"/>
+            </ComboBox>
+        </StackPanel>
+
+        <Grid Margin="8">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="1*" />
+                <ColumnDefinition Width="1*" />
+                <ColumnDefinition Width="1*" />
+                <ColumnDefinition Width="1*" />
+                <ColumnDefinition Width="1*" />
+                <ColumnDefinition Width="1*" />
+            </Grid.ColumnDefinitions>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="1*" />
+                <RowDefinition Height="1*" />
+            </Grid.RowDefinitions>
+            <Label Grid.Row="0" Grid.Column="0" Content="ID" Margin="2" />
+            <Label Grid.Row="0" Grid.Column="1" Content="Func" Margin="2" />
+            <Label Grid.Row="0" Grid.Column="2" Content="Address" Margin="2" Grid.ColumnSpan="2"/>
+            <Label Grid.Row="0" Grid.Column="4" Content="Data" Margin="2" Grid.ColumnSpan="2" />
+
+            <TextBox Grid.Row="1" Grid.Column="0" Name="tbID" Text="1" Margin="2"  />
+            <TextBox Grid.Row="1" Grid.Column="1" Name="tbFunc" Text="1" Margin="2" TextChanged="tbFunc_TextChanged" />
+            <TextBox Grid.Row="1" Grid.Column="2" Name="tbAddressH" Text="0" Margin="2" />
+            <TextBox Grid.Row="1" Grid.Column="3" Name="tbAddressL" Text="1" Margin="2" />
+            <TextBox Grid.Row="1" Grid.Column="4" Name="tbDataH" Text="0" Margin="2" />
+            <TextBox Grid.Row="1" Grid.Column="5" Name="tbDataL" Text="1" Margin="2" />
+        </Grid>
+
+        <Grid>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="1*" />
+                <ColumnDefinition Width="1*" />
+            </Grid.ColumnDefinitions>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="1*" />
+                <RowDefinition Height="1*" />
+            </Grid.RowDefinitions>
+            <Button x:Name="btOpen" Content="OPEN" Margin="10" Click="btOpen_Click"/>
+            <Button x:Name="btClose" Content="CLOSE" Margin="10" Grid.Column="1" Click="btClose_Click"/>
+            <Button x:Name="btStart" Content="START" Margin="10,0" Grid.Row="1" Height="20" VerticalAlignment="Top" Click="btStart_Click"/>
+            <Button x:Name="btStop" Content="STOP" Margin="10,0" Grid.Row="1" Grid.Column="1" Click="btStop_Click"/>
+        </Grid>
+        <Label Content="Sending Frame" Margin="10,10,10,0"/>
+        <TextBox x:Name="tbSend" Margin="10,0"/>
+        <Label Content="Receiving Frame" Margin="10,0"/>
+        <TextBox x:Name="tbReceive" Margin="10,0"/>
+    </StackPanel>
+</Window>

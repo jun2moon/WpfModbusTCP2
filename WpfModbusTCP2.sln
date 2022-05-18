@@ -1,0 +1,25 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.2.32505.173
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WpfModbusTCP2", "WpfModbusTCP2\WpfModbusTCP2.csproj", "{E9E7CFFA-DCB0-4742-B3C6-E445976D8C57}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{E9E7CFFA-DCB0-4742-B3C6-E445976D8C57}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{E9E7CFFA-DCB0-4742-B3C6-E445976D8C57}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{E9E7CFFA-DCB0-4742-B3C6-E445976D8C57}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{E9E7CFFA-DCB0-4742-B3C6-E445976D8C57}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {F599B140-85A3-4AB1-8FA8-87F3B1EBF5B1}
+	EndGlobalSection
+EndGlobal
