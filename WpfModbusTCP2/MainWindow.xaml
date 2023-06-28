@@ -5,15 +5,18 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:WpfModbusTCP2"
         mc:Ignorable="d"
-        Title="Modbus TCP" Height="320" Width="300">
+        Title="Modbus TCP" Height="350" Width="300">
     <StackPanel>
         <StackPanel Orientation="Horizontal" Margin="10">
-            <Label Content="Port Name : " />
-            <ComboBox x:Name="comIP" Text="No IP selected" Width="100" SelectionChanged="comIP_SelectionChanged">
-                <ComboBoxItem Content="127.0.0.1"/>
-                <ComboBoxItem Content="192.168.10.10"/>
-            </ComboBox>
+            <Label Content="IP : " />
+            <TextBox x:Name="tbIP" Text="127.0.0.1" Width="100"/>
+            <Label Content="Port : " />
+            <TextBox x:Name="tbPort" Text="502" />
         </StackPanel>
+
+        <TextBlock FontWeight="Bold" Margin="10" TextWrapping="Wrap" FontSize="12">
+            1-byte hexadecimal integers should be input! (Function codes 1 to 6 can be executed)
+        </TextBlock>
 
         <Grid Margin="8">
             <Grid.ColumnDefinitions>

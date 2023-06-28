@@ -2,7 +2,7 @@
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
-using System.Net.Sockets;  // NuGet으로 설치해야 함
+using System.Net.Sockets;
 using System.Windows.Threading;
 
 namespace WpfModbusTCP2
@@ -17,38 +17,60 @@ namespace WpfModbusTCP2
         {
             InitializeComponent();
 
-            tcpClient = new TcpClient("127.0.0.1", 502);
-            stream = tcpClient.GetStream();
-
             InitializeEnableStates(true);
             timer1.Interval = new TimeSpan(0, 0, 1);
             timer1.Tick += Timer1_Tick;
             timer1.IsEnabled = false;
+
+            try
+            {
+                tcpClient = new TcpClient("127.0.0.1", 502);  // local host
+                stream = tcpClient.GetStream();
+            }
+            catch
+            {
+                MessageBox.Show("There is no Modbus server at local host", "Error");
+            }
         }
 
-        private void comIP_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        private void tbFunc_TextChanged(object sender, TextChangedEventArgs e)
         {
-            comIP.Text = comIP.SelectedItem.ToString();
+            try
+            {
+                byte functionCode = Convert.ToByte(tbFunc.Text);
+                switch (functionCode)
+                {
+                    case 1:
+                    case 2:
+                    case 3:
+                    case 4:
+                    case 5:
+                    case 6:
+                        break;
+                    default:
+                        MessageBox.Show("Function codes 1 to 6 can be executed", "Notice");
+                        break;
+                }
+                tbFunc.Text = functionCode.ToString();
+            }
+            catch
+            {
+                MessageBox.Show("Input an unsigned 8-bit integer", "Error");
+            }
         }
 
         private void btOpen_Click(object sender, RoutedEventArgs e)
         {
             try
             {
-                //tcpClient = new TcpClient(comIP.Text, 502); // ip + 포트 (local host: 127.0.0.1)(보통 예: 192.168.10.10)
-                //stream = tcpClient.GetStream();
-
-                if (!tcpClient.Connected)
-                {
-                    tcpClient.ConnectAsync(comIP.Text, 502);
-                    stream = tcpClient.GetStream();
-                }
+                tcpClient = new TcpClient(tbIP.Text, int.Parse(tbPort.Text));
+                stream = tcpClient.GetStream();
                 InitializeEnableStates(false);
                 btStop.IsEnabled = false;
             }
             catch
             {
-                MessageBox.Show("No IP selected!", "Warning");
+                MessageBox.Show("IP connection error!", "Error");
             }
         }
 
@@ -96,29 +118,30 @@ namespace WpfModbusTCP2
         {
             try
             {
-                byte slaveAddress = Convert.ToByte(tbID.Text);  // 0x01;  // 국번
-                byte functionCode = Convert.ToByte(tbFunc.Text);  // 0x01;  // 펑션 코드
-                byte addressH = Convert.ToByte(tbAddressH.Text);  // 0x00;
-                byte addressL = Convert.ToByte(tbAddressL.Text);  // 0x00;  // 시작 주소
-                byte dataH = Convert.ToByte(tbDataH.Text);  // 0x00;
-                byte dataL = Convert.ToByte(tbDataL.Text); // 0x09;  // 데이터 개수
+                byte slaveAddress = Convert.ToByte(tbID.Text, 16);  // 0x01;  // 국번 (16진수)
+                byte functionCode = Convert.ToByte(tbFunc.Text, 16);  // 0x01;  // 펑션 코드 (16진수)
+                byte addressH = Convert.ToByte(tbAddressH.Text, 16);  // 0x00;
+                byte addressL = Convert.ToByte(tbAddressL.Text, 16);  // 0x00;  // 시작 주소 (16진수)
+                byte dataH = Convert.ToByte(tbDataH.Text, 16);  // 0x00;
+                byte dataL = Convert.ToByte(tbDataL.Text, 16); // 0x09;  // 데이터 개수 (16진수)
 
                 // 데이터 송신
-                byte[] bytesSent = new byte[] {0,0,0,0,0,6, slaveAddress, functionCode, addressH, addressL, dataH, dataL };
+                byte[] bytesSent = new byte[] { 0, 0, 0, 0, 0, 6, slaveAddress, functionCode, addressH, addressL, dataH, dataL };
                 stream.Write(bytesSent, 0, bytesSent.Length);
                 tbSend.Text = BitConverter.ToString(bytesSent);
 
                 await Task.Delay(50);
 
                 // 데이터 수신
-                int bytesLength = functionCode switch {
-                    1 => 10 + dataL/8,
-                    2 => 10 + dataL/8,
-                    3 => 9 + dataL*2,
-                    4 => 9 + dataL*2,
-                    5 => 10,
-                    6 => 10,
-                    _ => 10
+                int bytesLength = functionCode switch
+                {
+                    1 => 9 + dataL / 8 + ((dataL % 8 == 0) ? 0 : 1),  // bit read (coil)
+                    2 => 9 + dataL / 8 + ((dataL % 8 == 0) ? 0 : 1),  // bit read (input bit)
+                    3 => 9 + dataL * 2,  // word read (holding register)
+                    4 => 9 + dataL * 2,  // word read (input register)
+                    5 => 12,            // bit write (coil)
+                    6 => 12,            // word write (holding register)
+                    _ => 12
                 };
                 byte[] bytesReceived = new byte[bytesLength];
                 stream.Read(bytesReceived, 0, bytesReceived.Length);
@@ -128,32 +151,6 @@ namespace WpfModbusTCP2
             {
                 timer1.IsEnabled = false;
                 MessageBox.Show("Unsigned 8-bit integers should be input", "Error");
-            }
-        }
-
-        private void tbFunc_TextChanged(object sender, TextChangedEventArgs e)
-        {
-            try
-            {
-                byte functionCode = Convert.ToByte(tbFunc.Text);
-                switch (functionCode)
-                {
-                    case 1:
-                    case 2:
-                    case 3:
-                    case 4:
-                    case 5:
-                    case 6:
-                        break;
-                    default:
-                        MessageBox.Show("Function codes 1 to 6 can be executed", "Notice");
-                        break;
-                }
-                tbFunc.Text = functionCode.ToString();
-            }
-            catch
-            {
-                MessageBox.Show("Input an unsigned 8-bit integer", "Error");
             }
         }
     }
