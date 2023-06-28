@@ -118,21 +118,21 @@ namespace WpfModbusTCP2
         {
             try
             {
-                byte slaveAddress = Convert.ToByte(tbID.Text, 16);  // 0x01;  // 국번 (16진수)
-                byte functionCode = Convert.ToByte(tbFunc.Text, 16);  // 0x01;  // 펑션 코드 (16진수)
+                byte slaveAddress = Convert.ToByte(tbID.Text, 16);  // 0x01;  // slave address (16진수)
+                byte functionCode = Convert.ToByte(tbFunc.Text, 16);  // 0x01;  // function code (16진수)
                 byte addressH = Convert.ToByte(tbAddressH.Text, 16);  // 0x00;
-                byte addressL = Convert.ToByte(tbAddressL.Text, 16);  // 0x00;  // 시작 주소 (16진수)
+                byte addressL = Convert.ToByte(tbAddressL.Text, 16);  // 0x00;  // starting address (16진수)
                 byte dataH = Convert.ToByte(tbDataH.Text, 16);  // 0x00;
-                byte dataL = Convert.ToByte(tbDataL.Text, 16); // 0x09;  // 데이터 개수 (16진수)
+                byte dataL = Convert.ToByte(tbDataL.Text, 16); // 0x09;  // Number of Data (16진수)
 
-                // 데이터 송신
+                // data sending
                 byte[] bytesSent = new byte[] { 0, 0, 0, 0, 0, 6, slaveAddress, functionCode, addressH, addressL, dataH, dataL };
                 stream.Write(bytesSent, 0, bytesSent.Length);
                 tbSend.Text = BitConverter.ToString(bytesSent);
 
                 await Task.Delay(50);
 
-                // 데이터 수신
+                // data receiving
                 int bytesLength = functionCode switch
                 {
                     1 => 9 + dataL / 8 + ((dataL % 8 == 0) ? 0 : 1),  // bit read (coil)
