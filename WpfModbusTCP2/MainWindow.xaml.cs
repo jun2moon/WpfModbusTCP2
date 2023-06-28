@@ -118,12 +118,12 @@ namespace WpfModbusTCP2
         {
             try
             {
-                byte slaveAddress = Convert.ToByte(tbID.Text, 16);  // 0x01;  // slave address (16진수)
-                byte functionCode = Convert.ToByte(tbFunc.Text, 16);  // 0x01;  // function code (16진수)
+                byte slaveAddress = Convert.ToByte(tbID.Text, 16);  // 0x01;  // slave address (HEX)
+                byte functionCode = Convert.ToByte(tbFunc.Text, 16);  // 0x01;  // function code (HEX)
                 byte addressH = Convert.ToByte(tbAddressH.Text, 16);  // 0x00;
-                byte addressL = Convert.ToByte(tbAddressL.Text, 16);  // 0x00;  // starting address (16진수)
+                byte addressL = Convert.ToByte(tbAddressL.Text, 16);  // 0x00;  // starting address (HEX)
                 byte dataH = Convert.ToByte(tbDataH.Text, 16);  // 0x00;
-                byte dataL = Convert.ToByte(tbDataL.Text, 16); // 0x09;  // Number of Data (16진수)
+                byte dataL = Convert.ToByte(tbDataL.Text, 16); // 0x09;  // Number of Data (HEX)
 
                 // data sending
                 byte[] bytesSent = new byte[] { 0, 0, 0, 0, 0, 6, slaveAddress, functionCode, addressH, addressL, dataH, dataL };
