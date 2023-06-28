@@ -9,16 +9,20 @@
     <StackPanel>
         <StackPanel Orientation="Horizontal" Margin="10">
             <Label Content="IP : " />
-            <TextBox x:Name="tbIP" Text="127.0.0.1" Width="100"/>
+            <TextBox x:Name="tbIP" Text="127.0.0.1" Width="80" Height="20"/>
             <Label Content="Port : " />
-            <TextBox x:Name="tbPort" Text="502" />
+            <TextBox x:Name="tbPort" Text="502"  Height="20"/>
         </StackPanel>
 
-        <TextBlock FontWeight="Bold" Margin="10" TextWrapping="Wrap" FontSize="12">
+        <TextBlock FontWeight="Bold" Margin="10,0" TextWrapping="Wrap" FontSize="12">
             1-byte hexadecimal integers should be input! (Function codes 1 to 6 can be executed)
         </TextBlock>
 
         <Grid Margin="8">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="1*" />
+                <RowDefinition Height="1*" />
+            </Grid.RowDefinitions>
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="1*" />
                 <ColumnDefinition Width="1*" />
@@ -27,10 +31,7 @@
                 <ColumnDefinition Width="1*" />
                 <ColumnDefinition Width="1*" />
             </Grid.ColumnDefinitions>
-            <Grid.RowDefinitions>
-                <RowDefinition Height="1*" />
-                <RowDefinition Height="1*" />
-            </Grid.RowDefinitions>
+
             <Label Grid.Row="0" Grid.Column="0" Content="ID" Margin="2" />
             <Label Grid.Row="0" Grid.Column="1" Content="Func" Margin="2" />
             <Label Grid.Row="0" Grid.Column="2" Content="Address" Margin="2" Grid.ColumnSpan="2"/>
